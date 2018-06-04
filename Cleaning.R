@@ -480,3 +480,5 @@ weight$ntflowtz08 <- datas1[,1]
 weight$stationID <- 72
 weight <- weight[,c(1:4,13,5:12)]
 
+
+write.csv(weight, "72weight2016.csv", row.names = FALSE)
