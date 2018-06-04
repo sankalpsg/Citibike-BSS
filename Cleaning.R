@@ -2,7 +2,7 @@ path <- 'C:/Users/Sankalp/Desktop/DataScience Trinity/Dissertation/Mimi Zhang Fi
 setwd(path)
 
 
-
+#################################################3
 #Importing the dataset
 
 daily<-read.csv("Daily(1504-1803).csv")
@@ -10,13 +10,82 @@ daily<-read.csv("Daily(1504-1803).csv")
 View(daily)
 hourly <-read.csv("Hourly.csv")
 
+#################################################
+
+
+###################### Station Distance Matrix #######################################3
+
+final <- read.csv("C:/Users/Sankalp/Desktop/DataScience Trinity/Dissertation/Mimi Zhang Files/CitiBike/CitiBike/Station_Information.csv")
+final1<- final[,c(1,4,5)]
+
+####################################################################
+library(Imap)
+distMatr <- GeoDistanceInMetresMatrix(final1)
+targetPath <- "C:/Users/Sankalp/Desktop"
+write.matrix(format(distMatr, scientific=FALSE), 
+             file = paste(targetpath, "test.csv", sep="/"),sep=',')
+
+write.table(distMatr,file="test.txt") # keeps the rownames
+
+
+ReplaceLowerOrUpperTriangle <- function(m, triangle.to.replace){
+  # If triangle.to.replace="lower", replaces the lower triangle of a square matrix with its upper triangle.
+  # If triangle.to.replace="upper", replaces the upper triangle of a square matrix with its lower triangle.
+  
+  if (nrow(m) != ncol(m)) stop("Supplied matrix must be square.")
+  if      (tolower(triangle.to.replace) == "lower") tri <- lower.tri(m)
+  else if (tolower(triangle.to.replace) == "upper") tri <- upper.tri(m)
+  else stop("triangle.to.replace must be set to 'lower' or 'upper'.")
+  m[tri] <- t(m)[tri]
+  return(m)
+}
+
+GeoDistanceInMetresMatrix <- function(df.geopoints){
+  # Returns a matrix (M) of distances between geographic points.
+  # M[i,j] = M[j,i] = Distance between (df.geopoints$lat[i], df.geopoints$lon[i]) and
+  # (df.geopoints$lat[j], df.geopoints$lon[j]).
+  # The row and column names are given by df.geopoints$name.
+  
+  GeoDistanceInMetres <- function(g1, g2){
+    # Returns a vector of distances. (But if g1$index > g2$index, returns zero.)
+    # The 1st value in the returned vector is the distance between g1[[1]] and g2[[1]].
+    # The 2nd value in the returned vector is the distance between g1[[2]] and g2[[2]]. Etc.
+    # Each g1[[x]] or g2[[x]] must be a list with named elements "index", "lat" and "lon".
+    # E.g. g1 <- list(list("index"=1, "lat"=12.1, "lon"=10.1), list("index"=3, "lat"=12.1, "lon"=13.2))
+    DistM <- function(g1, g2){
+      require("Imap")
+      return(ifelse(g1$index > g2$index, 0, gdist(lat.1=g1$lat, lon.1=g1$lon, lat.2=g2$lat, lon.2=g2$lon, units="m")))
+    }
+    return(mapply(DistM, g1, g2))
+  }
+  
+  n.geopoints <- nrow(df.geopoints)
+  
+  # The index column is used to ensure we only do calculations for the upper triangle of points
+  df.geopoints$index <- 1:n.geopoints
+  
+  # Create a list of lists
+  list.geopoints <- by(df.geopoints[,c("index", "lat", "lon")], 1:n.geopoints, function(x){return(list(x))})
+  
+  # Get a matrix of distances (in metres)
+  mat.distances <- ReplaceLowerOrUpperTriangle(outer(list.geopoints, list.geopoints, GeoDistanceInMetres), "lower")
+  
+  # Set the row and column names
+  rownames(mat.distances) <- df.geopoints$name
+  colnames(mat.distances) <- df.geopoints$name
+  
+  return(mat.distances)
+}
+
+############################################################################################
+
 ######################## NETFLOW #################################################
 
 dropoff0116 <- read.csv("C:/Users/Sankalp/Desktop/DataScience Trinity/Dissertation/Mimi Zhang Files/CitiBike/Flow-Delta/201601-DropOff.csv")
 pickup0116 <- read.csv("C:/Users/Sankalp/Desktop/DataScience Trinity/Dissertation/Mimi Zhang Files/CitiBike/Flow-Delta/201601-PickUp.csv")
 
 z0116 <- names(dropoff0116)[-1]
-netflow0116 <- cbind(dropoff0116[1], dropoff0116[z] - pickup0116[match(dropoff0116$Station_ID, pickup0116$Station_ID), z0116])
+netflow0116 <- cbind(dropoff0116[1], dropoff0116[z0116] - pickup0116[match(dropoff0116$Station_ID, pickup0116$Station_ID), z0116])
 
 #----------------
 
@@ -126,71 +195,6 @@ netflow1216 <- cbind(dropoff1216[1], dropoff1216[z1216] - pickup1216[match(dropo
 
 
 
-###################### Station Distance Matrix #######################################3
-
-final <- merge(stationLoc,data,by.x="station_id",by.y="StationID")
-final1<- final[,c(1,2,3)]
-
-####################################################################
-
-distMatr <- GeoDistanceInMetresMatrix(final1)
-targetPath <- "C:/Users/Sankalp/Desktop"
-write.matrix(format(distMatr, scientific=FALSE), 
-             file = paste(targetpath, "test.csv", sep="/"),sep=',')
-
-write.table(distMatr,file="test.txt") # keeps the rownames
-
-
-ReplaceLowerOrUpperTriangle <- function(m, triangle.to.replace){
-  # If triangle.to.replace="lower", replaces the lower triangle of a square matrix with its upper triangle.
-  # If triangle.to.replace="upper", replaces the upper triangle of a square matrix with its lower triangle.
-  
-  if (nrow(m) != ncol(m)) stop("Supplied matrix must be square.")
-  if      (tolower(triangle.to.replace) == "lower") tri <- lower.tri(m)
-  else if (tolower(triangle.to.replace) == "upper") tri <- upper.tri(m)
-  else stop("triangle.to.replace must be set to 'lower' or 'upper'.")
-  m[tri] <- t(m)[tri]
-  return(m)
-}
-
-GeoDistanceInMetresMatrix <- function(df.geopoints){
-  # Returns a matrix (M) of distances between geographic points.
-  # M[i,j] = M[j,i] = Distance between (df.geopoints$lat[i], df.geopoints$lon[i]) and
-  # (df.geopoints$lat[j], df.geopoints$lon[j]).
-  # The row and column names are given by df.geopoints$name.
-  
-  GeoDistanceInMetres <- function(g1, g2){
-    # Returns a vector of distances. (But if g1$index > g2$index, returns zero.)
-    # The 1st value in the returned vector is the distance between g1[[1]] and g2[[1]].
-    # The 2nd value in the returned vector is the distance between g1[[2]] and g2[[2]]. Etc.
-    # Each g1[[x]] or g2[[x]] must be a list with named elements "index", "lat" and "lon".
-    # E.g. g1 <- list(list("index"=1, "lat"=12.1, "lon"=10.1), list("index"=3, "lat"=12.1, "lon"=13.2))
-    DistM <- function(g1, g2){
-      require("Imap")
-      return(ifelse(g1$index > g2$index, 0, gdist(lat.1=g1$lat, lon.1=g1$lon, lat.2=g2$lat, lon.2=g2$lon, units="m")))
-    }
-    return(mapply(DistM, g1, g2))
-  }
-  
-  n.geopoints <- nrow(df.geopoints)
-  
-  # The index column is used to ensure we only do calculations for the upper triangle of points
-  df.geopoints$index <- 1:n.geopoints
-  
-  # Create a list of lists
-  list.geopoints <- by(df.geopoints[,c("index", "lat", "lon")], 1:n.geopoints, function(x){return(list(x))})
-  
-  # Get a matrix of distances (in metres)
-  mat.distances <- ReplaceLowerOrUpperTriangle(outer(list.geopoints, list.geopoints, GeoDistanceInMetres), "lower")
-  
-  # Set the row and column names
-  rownames(mat.distances) <- df.geopoints$name
-  colnames(mat.distances) <- df.geopoints$name
-  
-  return(mat.distances)
-}
-
-############################################################################################
 
 
 
@@ -207,7 +211,8 @@ holidays$V2 <- as.Date(holidays$V2)
 weight$holiday <- ifelse(weight$dat2 %in% holidays$V2, 1, 0) 
 #weight$holiday1 <- ifelse(weight$day %in% c('Saturday','Sunday'), 1, 0)
 
-  
+####################### ZONE 1############################################## 
+ 
 netf1 <- netflow0116[1,seq(2, ncol(netflow0116), 8), ]
 netf2 <- netflow0216[1,seq(2, ncol(netflow0216), 8), ]
 netf3 <- netflow0316[1,seq(2, ncol(netflow0316), 8), ]
@@ -237,7 +242,8 @@ tnetf12 <- as.data.frame(t(netf12))
 
 library(plyr)
 datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-datas1$date <- seq(as.Date('2016-01-01'),as.Date('2016-12-31'),by = 1)
+weight$ntflowtz01 <- datas1[,1] 
+
 
 ################################################# ZONE 2
 
