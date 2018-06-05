@@ -130,274 +130,323 @@ holidays$V2 <- as.Date(holidays$V2)
 weight$holiday <- ifelse(weight$dat2 %in% holidays$V2, 1, 0) 
 #weight$holiday1 <- ifelse(weight$day %in% c('Saturday','Sunday'), 1, 0)
 
-####################### ZONE 1############################################## 
-
-netf1 <- netflow0116[1,seq(2, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(2, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(2, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(2, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(2, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(2, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(2, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(2, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(2, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(2, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(2, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(2, ncol(netflow1216), 8), ]
+library(mefa)
+weight = rep(weight,811)
 
 
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
+z1 <- NULL
+z2 <- NULL
+z3 <- NULL
+z4 <- NULL
+z5 <- NULL
+z6 <- NULL
+z7 <- NULL
+z8 <- NULL
+StationID <- NULL
 
-library(plyr)
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz01 <- datas1[,1] 
+for(i in 1:811) {
+  #######################   ZONE 1  ############################################## 
+  
+  netf1 <- netflow0116[i,seq(2, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(2, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(2, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(2, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(2, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(2, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(2, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(2, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(2, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(2, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(2, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(2, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  library(plyr)
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  
+  library(data.table) #data.table_1.9.5
+  z1  <- rbindlist(list(z1,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  #weight$ntflowtz01 <- datas1[,1] 
+  
+  
+  ################################################# ZONE 2
+  
+  netf1 <- netflow0116[i,seq(3, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(3, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(3, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(3, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(3, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(3, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(3, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(3, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(3, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(3, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(3, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(3, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  z2  <- rbindlist(list(z2,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  
+  #weight$ntflowtz02 <- datas1[,1] 
+  
+  #################### ZOne 3 ###########################################
+  
+  
+  netf1 <- netflow0116[i,seq(4, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(4, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(4, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(4, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(4, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(4, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(4, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(4, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(4, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(4, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(4, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(4, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  library(data.table)
+  z3  <- rbindlist(list(z3,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  
+  #weight$ntflowtz03 <- datas1[,1] 
+  
+  ################ ZOne 4 ###########################################
+  
+  
+  netf1 <- netflow0116[i,seq(5, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(5, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(5, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(5, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(5, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(5, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(5, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(5, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(5, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(5, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(5, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(5, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  z4  <- rbindlist(list(z4,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  
+  #weight$ntflowtz04 <- datas1[,1] 
+  
+  
+  # ######################### ZONE 5##################################
+  
+  
+  netf1 <- netflow0116[i,seq(6, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(6, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(6, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(6, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(6, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(6, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(6, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(6, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(6, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(6, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(6, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(6, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  
+  z5  <- rbindlist(list(z5,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  #weight$ntflowtz05 <- datas1[,1] 
+  
+  ################################# ZONE 6  ########################################
+  
+  
+  netf1 <- netflow0116[i,seq(7, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(7, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(7, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(7, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(7, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(7, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(7, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(7, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(7, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(7, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(7, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(7, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  z6  <- rbindlist(list(z6,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  
+  
+  #weight$ntflowtz06 <- datas1[,1] 
+  
+  ############################ ZOne 7 ###################################3
+  
+  
+  netf1 <- netflow0116[i,seq(8, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(8, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(8, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(8, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(8, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(8, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(8, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(8, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(8, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(8, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(8, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(8, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  z7  <- rbindlist(list(z7,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  
+  #weight$ntflowtz07 <- datas1[,1] 
+  
+  ################################## ZONE 8  #############################################
+  
+  
+  netf1 <- netflow0116[i,seq(9, ncol(netflow0116), 8), ]
+  netf2 <- netflow0216[i,seq(9, ncol(netflow0216), 8), ]
+  netf3 <- netflow0316[i,seq(9, ncol(netflow0316), 8), ]
+  netf4 <- netflow0416[i,seq(9, ncol(netflow0416), 8), ]
+  netf5 <- netflow0516[i,seq(9, ncol(netflow0516), 8), ]
+  netf6 <- netflow0616[i,seq(9, ncol(netflow0616), 8), ]
+  netf7 <- netflow0716[i,seq(9, ncol(netflow0716), 8), ]
+  netf8 <- netflow0816[i,seq(9, ncol(netflow0816), 8), ]
+  netf9 <- netflow0916[i,seq(9, ncol(netflow0916), 8), ]
+  netf10 <- netflow1016[i,seq(9, ncol(netflow1016), 8), ]
+  netf11 <- netflow1116[i,seq(9, ncol(netflow1116), 8), ]
+  netf12 <- netflow1216[i,seq(9, ncol(netflow1216), 8), ]
+  
+  
+  tnetf1 <- as.data.frame(t(netf1))
+  tnetf2 <- as.data.frame(t(netf2))
+  tnetf3 <- as.data.frame(t(netf3))
+  tnetf4 <- as.data.frame(t(netf4))
+  tnetf5 <- as.data.frame(t(netf5))
+  tnetf6 <- as.data.frame(t(netf6))
+  tnetf7 <- as.data.frame(t(netf7))
+  tnetf8 <- as.data.frame(t(netf8))
+  tnetf9 <- as.data.frame(t(netf9))
+  tnetf10 <- as.data.frame(t(netf10))
+  tnetf11 <- as.data.frame(t(netf11))
+  tnetf12 <- as.data.frame(t(netf12))
+  
+  datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
+  #weight$ntflowtz08 <- datas1[,1] 
+  z8  <- rbindlist(list(z8,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
+  ###################################################
+  
+}
+a <- seq(1,811,1)
+a <- as.data.frame(a)
+a <- rep(row.names(a),each = 365)
+a <- as.data.frame(a, row.names(F))
 
+weight$StationID <- a
+weight$z1 <- z1
+weight$z2 <- z2
+weight$z3 <- z3
+weight$z4 <- z4
+weight$z5 <- z5
+weight$z6 <- z6
+weight$z7 <- z7
+weight$z8 <- z8
 
-################################################# ZONE 2
+weight$holiday <- as.factor(weight$holiday)
 
-netf1 <- netflow0116[1,seq(3, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(3, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(3, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(3, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(3, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(3, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(3, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(3, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(3, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(3, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(3, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(3, ncol(netflow1216), 8), ]
+weight2017 <- weight
 
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz02 <- datas1[,1] 
-
-#################### ZOne 3 ###########################################
-
-
-netf1 <- netflow0116[1,seq(4, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(4, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(4, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(4, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(4, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(4, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(4, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(4, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(4, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(4, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(4, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(4, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz03 <- datas1[,1] 
-
-################ ZOne 4 ###########################################
-
-
-netf1 <- netflow0116[1,seq(5, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(5, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(5, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(5, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(5, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(5, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(5, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(5, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(5, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(5, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(5, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(5, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz04 <- datas1[,1] 
-
-
-# ######################### ZONE 5##################################
-
-
-netf1 <- netflow0116[1,seq(6, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(6, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(6, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(6, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(6, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(6, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(6, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(6, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(6, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(6, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(6, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(6, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz05 <- datas1[,1] 
-
-################################# ZONE 6########################################
-
-
-netf1 <- netflow0116[1,seq(7, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(7, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(7, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(7, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(7, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(7, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(7, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(7, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(7, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(7, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(7, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(7, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz06 <- datas1[,1] 
-
-############################ ZOne 7 ###################################3
-
-
-netf1 <- netflow0116[1,seq(8, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(8, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(8, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(8, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(8, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(8, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(8, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(8, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(8, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(8, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(8, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(8, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz07 <- datas1[,1] 
-
-################################## ZONE 8#############################################
-
-
-netf1 <- netflow0116[1,seq(9, ncol(netflow0116), 8), ]
-netf2 <- netflow0216[1,seq(9, ncol(netflow0216), 8), ]
-netf3 <- netflow0316[1,seq(9, ncol(netflow0316), 8), ]
-netf4 <- netflow0416[1,seq(9, ncol(netflow0416), 8), ]
-netf5 <- netflow0516[1,seq(9, ncol(netflow0516), 8), ]
-netf6 <- netflow0616[1,seq(9, ncol(netflow0616), 8), ]
-netf7 <- netflow0716[1,seq(9, ncol(netflow0716), 8), ]
-netf8 <- netflow0816[1,seq(9, ncol(netflow0816), 8), ]
-netf9 <- netflow0916[1,seq(9, ncol(netflow0916), 8), ]
-netf10 <- netflow1016[1,seq(9, ncol(netflow1016), 8), ]
-netf11 <- netflow1116[1,seq(9, ncol(netflow1116), 8), ]
-netf12 <- netflow1216[1,seq(9, ncol(netflow1216), 8), ]
-
-
-tnetf1 <- as.data.frame(t(netf1))
-tnetf2 <- as.data.frame(t(netf2))
-tnetf3 <- as.data.frame(t(netf3))
-tnetf4 <- as.data.frame(t(netf4))
-tnetf5 <- as.data.frame(t(netf5))
-tnetf6 <- as.data.frame(t(netf6))
-tnetf7 <- as.data.frame(t(netf7))
-tnetf8 <- as.data.frame(t(netf8))
-tnetf9 <- as.data.frame(t(netf9))
-tnetf10 <- as.data.frame(t(netf10))
-tnetf11 <- as.data.frame(t(netf11))
-tnetf12 <- as.data.frame(t(netf12))
-
-datas1  <- rbind.fill(tnetf1, tnetf2, tnetf3,tnetf4,tnetf5,tnetf6,tnetf7,tnetf8,tnetf9,tnetf10,tnetf11,tnetf12)
-weight$ntflowtz08 <- datas1[,1] 
-
-###################################################
-weight$stationID <- 72
-weight <- weight[,c(1:4,13,5:12)]
-
-
-write.csv(weight, "72weight2017.csv", row.names = FALSE)
+#write.csv(weight, "72weight2017.csv", row.names = FALSE)
