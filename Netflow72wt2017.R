@@ -435,18 +435,19 @@ a <- as.data.frame(a)
 a <- rep(row.names(a),each = 365)
 a <- as.data.frame(a, row.names(F))
 
-weight$StationID <- a
-weight$z1 <- z1
-weight$z2 <- z2
-weight$z3 <- z3
-weight$z4 <- z4
-weight$z5 <- z5
-weight$z6 <- z6
-weight$z7 <- z7
-weight$z8 <- z8
+weight <- data.frame(weight,a,z1,z2,z3,z4,z5,z6,z7,z8)
+
+# weight$StationID <- a
+# weight$z1 <- z1
+# weight$z2 <- z2
+# weight$z3 <- z3
+# weight$z4 <- z4
+# weight$z5 <- z5
+# weight$z6 <- z6
+# weight$z7 <- z7
+# weight$z8 <- z8
 
 weight$holiday <- as.factor(weight$holiday)
-
 weight2017 <- weight
 
-#write.csv(weight, "72weight2017.csv", row.names = FALSE)
+write.csv(weight, "weight2017.csv", row.names = FALSE)

@@ -428,23 +428,29 @@ z8  <- rbindlist(list(z8,datas1),use.names = FALSE, fill = FALSE, idcol = FALSE)
 ###################################################
 
 }
+
+library(tidyr)
+
+
 a <- seq(1,811,1)
 a <- as.data.frame(a)
 a <- rep(row.names(a),each = 366)
 a <- as.data.frame(a, row.names(F))
 
-weight$StationID <- a
-weight$z1 <- z1
-weight$z2 <- z2
-weight$z3 <- z3
-weight$z4 <- z4
-weight$z5 <- z5
-weight$z6 <- z6
-weight$z7 <- z7
-weight$z8 <- z8
+weight <- data.frame(weight,a,z1,z2,z3,z4,z5,z6,z7,z8)
+
+# weight$StationID <- a
+# weight$z1 <- z1
+# weight$z2 <- z2
+# weight$z3 <- z3
+# weight$z4 <- z4
+# weight$z5 <- z5
+# weight$z6 <- z6
+# weight$z7 <- z7
+# weight$z8 <- z8
 
 weight$holiday <- as.factor(weight$holiday)
 weight2016 <- weight
-
+class(weight2016$holiday)
 #weight <- weight[,c(1:4,13,5:12)]
-write.csv(weight, "weight2016new.csv", row.names = FALSE)
+write.csv(weight, "weight2016.csv", row.names = FALSE)
